@@ -9,4 +9,14 @@ export var getData = (url, type) =>{
         })
     }
 
+    export var editData = (url, data, type) => {
+        console.log(data);
+        
+        axios.put(url, data)
+        .then(function(res) {
+            console.log(res);
+            store.dispatch({type: type});
+        });
+    }
+
 
