@@ -1,5 +1,7 @@
 import { createStore } from 'redux'
-import { getData } from './axios.js'
+import { getData, editData } from './axios.js'
+import { Alert } from 'reactstrap';
+
 
 const state = {
     currentProject: null,
@@ -10,6 +12,7 @@ const state = {
     containers: [],
     mileStone: [],
     catalog: [],
+    addContainerMode:false
 
 
 }
@@ -47,12 +50,20 @@ const reduser = function (state, action) {
             newState.mileStone = []
 
             newState.currentProject = action.payload;
-            var url = `${src}/userStory/allStories/${state.currentProject}`
+            // var url = `${src}/userStory/allStories/${state.currentProject}`
+            var url = `${src}/userStory/allStories/${action.payload}`
+console.log(url , action.payload);
+            
             getData(url, 'FILL_USER_STORY_BY_SPECIFIC_PROJECT')
             return newState
 
         case 'FILL_USER_STORY_BY_SPECIFIC_PROJECT':
-            newState.projectUserStory = action.payload;
+        console.log('us=',action.payload);
+            action.payload.subjects.map((subject)=>{
+                subject.requirements.map((us)=>{
+                    newState.projectUserStory.push(us)
+                })
+            })
             var url = `${src}/effort/allData/${state.currentProject}`
             getData(url, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
             return newState
@@ -77,19 +88,37 @@ const reduser = function (state, action) {
             var arr = [];
            
             
-            action.payload.arrayResult.map((component, index) => {
-                arr.push({
-                    id: component._.id,
-                    category: component.category,
-                    component: component.component,
-                    comlexity: [component.low_complexity, component.med_complexity, component.high_complexity]
-                })
-            })
-            this.setState({ arrayResult: arr });
+            // action.payload.arrayResult.map((component, index) => {
+            //     arr.push({
+            //         id: component._.id,
+            //         category: component.category,
+            //         component: component.component,
+            //         comlexity: [component.low_complexity, component.med_complexity, component.high_complexity]
+            //     })
+            // })
+            // this.setState({ arrayResult: arr });
             console.log(state);
                  return newState
             return newState
-
+            case 'ADD_NEW_CONTAINER':
+            var url =`${src}/effort/createContainer/${state.currentProject}/${action.payload.milestoneName}`
+            console.log(url)
+            console.log(action.payload)
+            state.currentProject != null ?
+            
+            editData(url, action.payload,'CLEAN_THE_STORE')
+            : window.alert('You did not select a project!')
+            return newState
+           
+            case 'CLEAN_THE_STORE':
+            // newState.projectUserStory = []
+            // newState.containers = []
+            // newState.mileStone = []
+            return newState
+           
+            case 'CHANGE_ADD_CONTAINER_MODE':
+            newState.addContainerMode = !state.addContainerMode
+            return newState
 
 
     }

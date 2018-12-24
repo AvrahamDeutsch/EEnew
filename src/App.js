@@ -14,7 +14,7 @@ class App extends Component {
     super(props)
     this.state = {
       // allContainersMound: false,
-      addContainerMound:false
+      // addContainerMound:false
 
     }
   }
@@ -68,8 +68,10 @@ class App extends Component {
   }
   
 createContainer(){
-  this.setState({ addContainerMound:!this.state.addContainerMound })
-  console.log(this.state);
+  store.dispatch({type:'CHANGE_ADD_CONTAINER_MODE'})
+  var mode = this.props.addContainerMode;
+  // this.setState({ addContainerMound:!this.state.addContainerMound })
+  console.log(mode);
   
 }
 
@@ -102,14 +104,14 @@ createContainer(){
           <Container
             name={container.containerName}
             mileStoneNumber={container.milestoneName}
-            numberOfTasks ={container.tasks.lengh}
+            // numberOfTasks ={container.tasks.length}
             currentCategory={container.category}
             totalWorkNumber={container.days}
             tasksArray={container.tasks}
             taskContainerUserStory={container.taskContainerUserStory}
           />)
         }) : null}
- {this.state.addContainerMound ? <Container/>:null}
+ {this.props.addContainerMode ? <Container/>:null}
  {/* <Container/>  */}
 
 {/* <Link className='link' to={createContainer}>Create container</Link>
