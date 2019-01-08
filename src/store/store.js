@@ -147,9 +147,11 @@ const reduser = function (state, action) {
             return newState
 
         case 'DELETE_TASK':
+        console.log(action.payload);
+        
             var mileStone = action.payload.mileStoneNumber
             var containerId = action.payload.containerId
-            var index = action.payload.index
+            var index = action.payload.taskIndex
             var urlDeleteTask = `${src}/effort/deleteTask/${state.currentProject}/${mileStone}/${containerId}/${index}`;
             deleteData(urlDeleteTask, action.payload, 'UPDATE_CURRENT_PROJECT')
             return newState

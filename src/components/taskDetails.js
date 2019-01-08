@@ -55,12 +55,12 @@ class TaskDetails extends Component {
     }
 
     deleteTask(taskIndex, containerId, mileStoneNumber) {
+        console.log(taskIndex);
         store.dispatch({ type: 'DELETE_TASK', payload: { taskIndex, containerId, mileStoneNumber } })
         this.setState({ deleteMode: false })
     }
 
     deleteDialog() {
-        console.log('as');
 
         return <div>
             <Modal isOpen={this.state.deleteMode}>

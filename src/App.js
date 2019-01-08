@@ -97,7 +97,7 @@ class App extends Component {
     // console.log(props.length);
     if (props.length > 0) {
       props.map((container, index) => {
-        // console.log(container);
+        console.log(container);
         return arr.push(
           <Container
             key={index}

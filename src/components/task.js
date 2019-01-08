@@ -132,14 +132,14 @@ class Task extends Component {
         let copy = { ...this.state };
         let index = this.state.taskUserStory;
         
-        // let id = this.props.projectUserStory[index]._id;
-        let id = this.props.projectUserStory[0]._id;
+        let id = this.props.projectUserStory[index]._id;
+        // let id = this.props.projectUserStory[0]._id;
         copy.taskUserStory = { index, id }
-        // console.log(copy);
-        // store.dispatch({
-        //     type: 'ADD_TASK',
-        //     payload: copy
-        // })
+        console.log(copy);
+        store.dispatch({
+            type: 'ADD_TASK',
+            payload: copy
+        })
         this.props.addTasksMode()
     }
 
