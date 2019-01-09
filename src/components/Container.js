@@ -25,7 +25,7 @@ class Container extends Component {
             // allTasksMode:true,
             taskMode: false,
             milestoneMode: 0,
-            // addContainerMode: this.props.addContainerMode,
+            addContainerMode: this.props.addContainerMode,
         }
     }
 
@@ -145,7 +145,7 @@ class Container extends Component {
     wiewAllTasks() {
         var arr = [];
         this.state.tasksArray.map((task, index) => {
-            // console.log(task);
+            console.log(task);
             return arr.push(
                 <TaskDetails
                     key={index}
@@ -305,9 +305,9 @@ class Container extends Component {
                     <Col>
 
                         {/* {this.props.addTaskMode ? this.addTask() : null} */}
-                        {this.state.taskMode ? this.addTask() : null}
+                        {/* {this.state.taskMode ? this.addTask() : null} */}
 
-                        {this.state.allTasksMode ? this.wiewAllTasks() : null}
+                        {/* {this.state.allTasksMode ? this.wiewAllTasks() : null} */}
 
                     </Col>
                 </Row>

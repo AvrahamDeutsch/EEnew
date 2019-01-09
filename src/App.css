@@ -12,3 +12,429 @@
     background: rgb(240, 107, 107,0.4);
 
 }
+.icon{
+    cursor: pointer;
+    width: 50px;
+    height: 40px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 25px;
+    display: none;
+    text-align: center;
+}
+.description:hover .icon{
+    display: block;
+}
+.asuumption_row:hover .icon{
+    display: block;
+}
+.iconDiv{
+    flex: 1;
+    display: flex;
+}
+.details{
+    flex: 6;
+    overflow: auto;
+    text-align: left;
+}
+
+.singleUserStory:hover .icon{
+    display: block;
+}
+
+.pdfPreview{
+    font-size: 15px;
+    text-align: left;
+    height: 750px;
+    overflow-y: scroll;
+}
+
+.pdfPreviewTitel{
+    text-align: center;
+}
+.pdfOverview{
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.imgDiv img{
+    width: 150px;
+    margin: 20px;
+} 
+
+
+.header {
+    height: 50px;
+    padding: 5px;
+    font-weight: bold;
+    color: rgb(199, 209, 219);
+    background-color: #1f91d3;
+    position: sticky;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+}
+
+.sidebar{
+    position: sticky;
+    top: 4rem;
+    z-index: 1000;
+    height: calc(95vh - 4rem);
+}
+
+
+.sidBarItem div{
+    font-size: 17px;
+    cursor: pointer;
+    padding-top: 2%;
+}
+
+.sidBarItem .link{
+    display: block;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 4px 0 4px 18px;
+}
+.sidBarItem .link:hover{
+   background: #cfd6da5e;
+}
+.sidBarItem>div>svg {
+    float: right;
+}
+
+.mainScreen{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.footer {
+    box-shadow: 0 -3px 10px 0 rgba(0,0,0,.0785);
+    height: 60px;
+    bottom: 0;
+    position: sticky;
+    width: 100%;
+    background-color: white;
+}
+
+/*.button{*/
+    /*position: relative;*/
+    /*border-radius:5px;*/
+    /*color: white;*/
+    /*height: 35px;*/
+    /*width: 30%;*/
+    /*margin: 20px;*/
+    /*max-width: 250px;*/
+    /*opacity: .9;*/
+/*}*/
+/*button:hover{*/
+    /*cursor: pointer;*/
+    /*opacity: 1;*/
+/*}*/
+.saveBtn{
+    background:rgb(115, 168, 247);
+    margin: 20px;
+}
+/*.disableBtn{*/
+    /*pointer-events: none;*/
+    /*!*background:rgb(212, 217, 224);*!*/
+    /*!*margin: 20px;*!*/
+/*}*/
+
+/*.deleteBtn{*/
+    /*background:rgb(255, 107, 107);*/
+    /*margin: 20px;*/
+/*}*/
+
+/* form */
+
+.formContainer{
+    min-height: 400px;
+}
+
+/*.divBorder{*/
+    /**/
+/*}*/
+
+/*.projectDescreptionInput{*/
+    /*border-left: 2px solid white;*/
+    /*border-right: 2px solid gray;*/
+    /*border-top: 2px solid gray;*/
+    /*border-bottom: 2px solid white;*/
+    /*border-radius: 10px;*/
+    /*width: 80%;*/
+    /*height: 200px;*/
+    /*margin: 20px;*/
+    /*padding: 15px;*/
+    /*font-size: 15px;*/
+/*}*/
+
+
+/*.actorsInput{*/
+    /*border-radius:5px ;*/
+    /*border-left: 2px solid white;*/
+    /*border-right: 2px solid gray ;*/
+    /*border-top: 2px solid gray;*/
+    /*border-bottom: 2px solid  white;*/
+    /*padding: 2px;*/
+    /*padding-left: 10px;*/
+    /*height: 35px;*/
+    /*width: 80%;*/
+    /*margin-top: 20px;*/
+    /*margin-bottom: 20px;*/
+/*}*/
+
+.actorDescription{
+    color: black;
+    border-left: 2px solid white;
+    border-right: 2px solid gray ;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid  white;
+    border-radius:5px ;
+    padding: 10px;
+    max-width: 80%;
+    min-width: 80%;
+    max-height: 80px;
+    min-height: 80px;
+    overflow: auto;
+    background: white;
+}
+  
+textarea:focus{
+    -webkit-box-shadow: 0 7px 11px 0 rgba(50, 50, 50, 0.45);
+    -moz-box-shadow:    0 7px 11px 0 rgba(50, 50, 50, 0.45);
+    box-shadow:         0 7px 11px 0 rgba(50, 50, 50, 0.45);
+}
+    
+input:focus{
+    -webkit-box-shadow: 0 7px 11px 0 rgba(50, 50, 50, 0.45);
+    -moz-box-shadow:    0 7px 11px 0 rgba(50, 50, 50, 0.45);
+    box-shadow:         0 7px 11px 0 rgba(50, 50, 50, 0.45);
+}
+    
+.showActors{
+    background: rgba(187, 223, 243, 0.93);
+    border-left: 2px solid white;
+    border-right: 2px solid gray ;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid  white;
+    margin: auto;
+    width: 85%;
+    margin-bottom: 5%;
+    height: 200px;
+    border-radius:10px;
+    overflow: auto;
+}
+     
+#actorView{
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    text-align: left;
+    border-bottom: 2px solid white;
+    display: flex;
+}
+#actorView:hover {
+    background: #83888a48;
+    border-radius: 5px;
+}
+#actorView:hover .icon{
+    display: block;
+}
+
+.subject{
+    margin: auto;
+    border: 1px solid gray;
+    background: white;
+    border-radius:5px ;
+    padding: 2px;
+    padding-left: 10px;
+    height: 35px;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+    
+.addUserStory{
+    margin: 5px;
+    margin: auto;
+    width: 80%;
+}
+.addUserStory .addUserStoryActor{
+    
+    margin: auto;
+    border: 1px solid gray;
+    background: white;
+    border-radius:5px ;
+    padding: 2px;
+    padding-left: 10px;
+    height: 35px;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.addUserStory .SingleUserStory{
+    /* border: 2px solid black;  */
+    border-left: 2px solid white;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid white;
+    
+    margin: auto;
+    border-radius:15px ;
+    padding: 10px;
+     max-width: 80%;
+     min-width: 80%;
+     max-height: 80px;
+     min-height: 80px;
+     overflow: auto;
+     /* background: rgb(217, 233, 189); */
+     
+    }
+    
+.addUserStory .viewUserStory {
+    background: rgba(187, 223, 243, 0.93);
+    border-left: 2px solid white;
+    border-right: 2px solid gray ;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid  white;
+    margin: auto;
+    width: 85%;
+    margin-bottom: 5%;
+    height: auto;
+    overflow: auto;
+    border-radius:10px;
+    max-height: 200px;
+}
+
+.singleUserStory{
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    border-bottom: 2px solid white;
+    display: flex;
+    font-size: 15px;
+}
+.singleUserStory:hover {
+    background: rgba(184, 180, 180, 0.363);
+    
+}
+.asuumption_row{
+    padding:10px 0 0 25px;
+    display: flex
+
+}
+/*.asuumption_row:hover{*/
+    /*background: rgba(137, 187, 243, 0.205);*/
+
+/*}*/
+.formAssumptionsContainer{
+    /* border: 2px solid gray; */
+    width: 100%;
+    padding: 2%;
+    font-size: 15px;
+    text-align: center;
+}
+
+.deleteDialog{
+    padding: 25px;
+    top: 25%;
+    left: 25%;
+    right: 25%;
+    position: absolute;
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+    width: 50%;
+    -webkit-box-shadow: 6px 6px 30px 0 rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    6px 6px 30px 0 rgba(50, 50, 50, 0.75);
+    box-shadow:         6px 6px 30px 0 rgba(50, 50, 50, 0.75);
+}
+
+/* ///////////////////  Pricing   ///////////////////// */
+
+.pricing{
+    width: 80%;
+    background: white;
+    margin: auto;
+    padding: 10px;
+}
+
+.mileStone{
+    display: flex;
+    border: 2px black solid;
+    text-align: center;
+    border-radius: 2mm
+
+}
+
+.process{
+    flex: 3;
+}
+.timeline{
+    flex: 4;
+}
+.days{
+    flex: 2;
+}
+.price{
+    flex: 3;
+}
+
+.grandTotal{
+    text-align: left;
+}
+
+.grandTotal input{
+    width: 60px;
+    text-align: left;
+}
+
+.TotalDays{
+    border-top: 2px black solid;
+    text-align: right;
+    padding: 10px;
+
+}
+
+.processContainers{
+    border-left: 2px black solid;
+    /* border-right: 2px black solid; */
+    flex: 6;
+    display: block;
+}
+
+.processComment{
+    flex: 3;
+}
+
+.priceInput{
+    flex: 3;
+
+}
+
+.singleProcessContainer .timeline{
+    flex: 4;
+    text-align: left;
+}
+
+
+.viewVersion{
+    text-align: left
+}
+
+
+button>a {
+    color: white;
+}
+button>a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+.massege{
+    padding: 50px;
+    margin-top: 30%;
+    color: lightblue;
+    /* border: 1px black solid; */
+    border-radius: 100%;
+    background: rgba(173, 216, 230, 0.205);
+}

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+    Button, Row, Col, Card, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText, Modal, ModalHeader, ModalBody, ModalFooter
+} from 'reactstrap';
 import Task from './task.js'
 import store from '../store/store.js'
 
@@ -49,7 +52,7 @@ class TaskDetails extends Component {
                 arrayResult={this.state.arrayResult}
                 upDate={true}
                 taskIndex={this.state.taskIndex}
-                changeEditMode={(bool)=>this.changeEditMode(bool)}
+                changeEditMode={(bool) => this.changeEditMode(bool)}
             />
         )
     }
@@ -76,49 +79,49 @@ class TaskDetails extends Component {
 
     render() {
         return (
-            <div style={{ border: 'solid grey 1px' }}>
-                <Row>
-                    <Col><h3>{this.state.taskName}</h3></Col>
-                </Row>
-                <Row>
-                    <Col>component : {this.state.component}</Col>
+            <div >
 
-                </Row>
-                <Row>
-                    {/* <Col>user story: {this.props.projectUserStory[this.state.taskUserStory].userStory}</Col> */}
-                </Row>
-                <Row>
-                    <Col>complexity days: {this.state.complexity}</Col>
-                </Row>
-                <Row>
-                    <Col>Learning days: {this.state.LearningDays}</Col>
-                </Row>
-                <Row>
-                    <Col>risk days: {this.state.risk}</Col>
-                </Row>
-                <Row>
-                    <Col>details    : {this.state.details}</Col>
-                </Row>
-                <Row>
-                    <Col>assumptions: {this.state.assumptions}</Col>
-                </Row>
-                <Row>
-                    <Col>total e.w. : {this.state.total}</Col>
-                </Row>
                 <Row>
                     <Col >
+                        <Card body>
+                            <CardTitle><h3>{this.state.taskName}</h3></CardTitle>
+                            <Row>
+                                <Col><b>component :</b> {this.state.component}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>user story:</b> {this.props.projectUserStory[this.state.taskUserStory.index].userStory}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>complexity days:</b> {this.state.complexity}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>Learning days:</b> {this.state.LearningDays}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>risk days:</b> {this.state.risk}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>details:</b> {this.state.details}</Col>
+                            </Row>
+                            <Row>
+                                <Col><b>assumptions: </b>{this.state.assumptions}</Col>
+                            </Row>
 
-                        <Button color='success' onClick={() => this.setState({ taskEditMode: !this.state.taskEditMode })}>Edit</Button>
+                            <Row>
+                                <Col >
+                                    <Col><h5><b>total e.w. : {this.state.total}</b></h5></Col>
+                                    <Button color='success' onClick={() => this.setState({ taskEditMode: !this.state.taskEditMode })}>Edit</Button>{' '}
+                                    <Button color='danger' onClick={() => this.setState({ deleteMode: true })}>Delete</Button>{' '}
+                                </Col>
+                            </Row>
+                        </Card>
                     </Col>
-                    <Col>
-
-                        <Button color='danger' onClick={() => this.setState({ deleteMode: true })}>Delete</Button>
-                    </Col>
+                    
                 </Row>
+
                 <div>
                     {this.state.taskEditMode ? this.taskUpdate() : null}
                     {this.state.deleteMode ? this.deleteDialog() : null}
-
 
                 </div>
             </div>

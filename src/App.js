@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import store from './store/store'
 // import { BrowserRouter, Route, Link } from 'react-router-dom'
 
-import { Form, FormGroup, Label, Input, Button, Row, Col } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Row, Col, ListGroup, ListGroupItem, Badge } from 'reactstrap';
 
 import './App.css';
 import Container from './components/Container';
+import ContainerDetails from './components/containerDetails.js';
 
 class App extends Component {
   constructor(props) {
@@ -79,14 +80,14 @@ class App extends Component {
 
   }
 
-  createContainer() {
+  createContainer(e) {
 
     return (
       <Container
         containerName='Enter the container name'
         addContainerMode={false}
         totalWorkNumber={0}
-        taskContainerUserStory={null}
+        taskContainerUserStory={e}
       />
     )
   }
@@ -99,18 +100,34 @@ class App extends Component {
       props.map((container, index) => {
         console.log(container);
         return arr.push(
-          <Container
-            key={index}
-            containerName={container.containerName}
-            mileStoneNumber={container.milestoneName}
-            numberOfTasks={container.tasks.length}
-            currentCategory={container.category}
-            totalWorkNumber={container.days}
-            tasksArray={container.tasks}
-            taskContainerUserStory={container.taskContainerUserStory}
-            id={container._id}
-            addContainerMode={true}
-          />
+          <Row>
+            <Col>
+              <ContainerDetails
+                key={index}
+                containerName={container.containerName}
+                mileStoneNumber={container.milestoneName}
+                numberOfTasks={container.tasks.length}
+                currentCategory={container.category}
+                totalWorkNumber={container.days}
+                tasksArray={container.tasks}
+                taskContainerUserStory={container.taskContainerUserStory}
+                id={container._id}
+                addContainerMode={true}
+              />
+            </Col>
+          </Row>
+          // <Container
+          //   key={index}
+          //   containerName={container.containerName}
+          //   mileStoneNumber={container.milestoneName}
+          //   numberOfTasks={container.tasks.length}
+          //   currentCategory={container.category}
+          //   totalWorkNumber={container.days}
+          //   tasksArray={container.tasks}
+          //   taskContainerUserStory={container.taskContainerUserStory}
+          //   id={container._id}
+          //   addContainerMode={true}
+          // />
         )
       })
     }
@@ -135,13 +152,11 @@ class App extends Component {
   userStoryList() {
     let arr = [];
     this.props.projectUserStory.map((elm, index) => {
-      arr.push(<Row  className={elm.numOfTasks == 0 ?'NotUserSttoryAssociatedTask':'UserSttoryAssociatedTask'} >
-        <Col med='6'>{elm.userStory}</Col>
-        <Col med='3'>{elm.numOfTasks}</Col>
-        <Col>
-          <Button size="sm" onClick={() => store.dispatch({ type: 'CHANGE_ADD_CONTAINER_MODE' })}>Add container</Button>
-        </Col>
-      </Row>
+      arr.push(
+        <ListGroupItem
+          color={elm.numOfTasks == 0 ? "warning" : "info"}
+          className="justify-content-between">{elm.userStory} <Badge pill>{elm.numOfTasks}</Badge>
+        </ListGroupItem>
       )
     })
     return arr
@@ -152,51 +167,60 @@ class App extends Component {
 
 
     return (
+      <container >
+        <Row >
+          <Col className="header">
+            <header className={'container py-2'}>Effort Evaluator</header>
+          </Col>
+        </Row>
+        <Row>
+          <ListGroup>
 
-      <Row>
-        <Col>
-          {this.userStoryList()}
-        </Col>
-        <Col>
-          <Form>
+          </ListGroup>
+          <Col>
+            {this.userStoryList()}
+          </Col>
+          <Col>
+            <Form>
 
-            <FormGroup>
-              <Label for="exampleSelect">Select project</Label>
-              <Input
-                type="select"
-                name="select"
-                id="exampleSelect"
-                placeholder='Select project'
-                onChange={(e) => this.projectSelected(e)}
-              >
-                {this.fillProgectsSelect()}
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleSelect">Select container</Label>
-              <Input
-                type="select"
-                name="select"
-                id="exampleSelect"
-                onChange={(e) => this.containersSelected(e)}
-              >
-                {this.fillContainersSelect()}
-              </Input>
-            </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelect">Select project</Label>
+                <Input
+                  type="select"
+                  name="select"
+                  id="exampleSelect"
+                  placeholder='Select project'
+                  onChange={(e) => this.projectSelected(e)}
+                >
+                  {this.fillProgectsSelect()}
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelect">Select container</Label>
+                <Input
+                  type="select"
+                  name="select"
+                  id="exampleSelect"
+                  onChange={(e) => this.containersSelected(e)}
+                >
+                  {this.fillContainersSelect()}
+                </Input>
+              </FormGroup>
 
-            <Button onClick={() => this.setState({ allContainersMound: !this.state.allContainersMound })}>All containers</Button>
+              <Button onClick={() => this.setState({ allContainersMound: !this.state.allContainersMound })}>All containers</Button>{' '}
+              <Button onClick={() => store.dispatch({ type: 'CHANGE_ADD_CONTAINER_MODE' })}>Add container</Button>
 
-            {this.state.allContainersMound ? this.allContainers() : null}
+              {this.state.allContainersMound ? this.allContainers() : null}
 
-            {this.props.addContainerMode ? this.createContainer() : null}
+              {this.props.addContainerMode ? this.createContainer() : null}
 
-            {this.state.containerSelectMode ? this.specificContainer() : null}
+              {this.state.containerSelectMode ? this.specificContainer() : null}
 
-          </Form>
-        </Col>
-      </Row>
+            </Form>
+          </Col>
+        </Row>
 
-
+      </container>
 
     );
   }
