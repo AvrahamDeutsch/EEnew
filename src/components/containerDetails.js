@@ -26,6 +26,10 @@ class ContainerDetails extends Component {
         }
     }
 
+    componentWillUpdate() {
+
+    }
+
     viewAllTasks() {
         var arr = [];
         this.props.tasksArray.map((task, index) => {
@@ -44,8 +48,8 @@ class ContainerDetails extends Component {
                         taskUserStory={task.taskUserStory}
                         details={task.details}
                         assumptions={task.assumptions}
-                        mileStoneNumber={this.state.mileStoneNumber}
-                        containerId={this.state.containerId}
+                        mileStoneNumber={this.props.mileStoneNumber}
+                        containerId={this.props.containerId}
                     /> </Col></Row>
             )
         })
@@ -60,8 +64,10 @@ class ContainerDetails extends Component {
         return arr
     }
 
-    addTask() {
-        return (
+      addTask() {
+        //  store.dispatch({ type: 'CATEGORY_CHANGED', payload: this.props.currentCategory })
+
+        return  (
             <Task
                 mileStoneNumber={this.props.mileStoneNumber}
                 containerId={this.props.containerId}
@@ -70,6 +76,10 @@ class ContainerDetails extends Component {
                 total='0'
             // addTasksMode={()=>this.addTasksMode()}
             />)
+    }
+
+    changeEditContainerMode(bool) {
+        return this.setState({ containerEditMode: bool })
     }
 
     editContainer() {
@@ -85,9 +95,11 @@ class ContainerDetails extends Component {
                 tasksArray={this.props.tasksArray}
                 taskContainerUserStory={this.props.taskContainerUserStory}
                 id={this.props.id}
-                // addContainerMode={true}
+                addContainerMode={true}
+                changeEditContainerMode={(bool) => this.changeEditContainerMode(bool)}
+                editContainerMode={this.state.containerEditMode}
             />
-            
+
         )
     }
 
@@ -118,7 +130,11 @@ class ContainerDetails extends Component {
                             <Col>
                                 {this.props.tasksArray.length >= 1 ? <Button onClick={() => this.setState({ viewTasksMode: !this.state.viewTasksMode })} >all tasks</Button> : null}{' '}
                                 <Button onClick={() => this.setState({ addTaskMode: !this.state.addTaskMode })} >add task</Button>{' '}
-                                <Button onClick={() => this.setState({ containerEditMode: !this.state.containerEditMode })} >edit</Button>{' '}
+                                <Button onClick={() => {
+                                    this.setState({ containerEditMode: !this.state.containerEditMode })
+                                }} >edit</Button>{' '}
+
+
                             </Col>
 
                         </Row>

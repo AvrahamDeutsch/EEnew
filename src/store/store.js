@@ -3,7 +3,10 @@ import { getData, editData, saveData, deleteData } from './axios.js'
 
 
 const state = {
-    currentProject: null,
+    // currentProject: null,
+    currentProject: {
+
+    },
     categories: [],
     arrayResult: [],
     projects: [],
@@ -23,6 +26,7 @@ var categoryPath = 'http://10.2.3.128:8080/app'
 
 const reduser = function (state, action) {
     var newState = { ...state }
+
     switch (action.type) {
 
         case 'GET_ALL_CATEGORIES':
@@ -33,7 +37,6 @@ const reduser = function (state, action) {
         case 'FILL_CATEGORIES_ARRAY':
             // console.log(action.payload.arrayResult);
             newState.categories = action.payload.arrayResult;
-
             return newState
 
         case 'GET_ALL_PROJECTS':
@@ -58,24 +61,16 @@ const reduser = function (state, action) {
 
 
         case 'FILL_USER_STORY_BY_SPECIFIC_PROJECT':
-
             // console.log('us=', action.payload);
             newState.projectUserStory = action.payload
-
-            // action.payload.subjects.map((subject) => {
-            //     return subject.requirements.map((us) => {
-
-            //         return newState.projectUserStory.push(us)
-            //     })
-            // })
             var urlUserStory = `${src}/effort/allData/${state.currentProject}`
             getData(urlUserStory, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
             return newState
 
-            /* this function filling the containers array in the state and
-            check for evry user story how many tasks exist  */
-            case 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT':
-            // console.log('action', action.payload);
+        /* this function filling the containers array in the state and
+        check for evry user story how many tasks exist  */
+        case 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT':
+            console.log('action', action.payload);
             newState.mileStone = action.payload.map((ms => {
                 if (ms != null) {
                     newState.mileStone[parseInt(ms.milestoneName)] = ms;
@@ -103,8 +98,9 @@ const reduser = function (state, action) {
                     complexity: [component.low_complexity, component.med_complexity, component.high_complexity]
                 })
             })
+            console.log(arr1);
             newState.arrayResult = arr1;
-            // console.log(newState.arrayResult);
+            console.log(newState.arrayResult);
 
             return newState
         case 'CHANGE_ADD_CONTAINER_MODE':
@@ -112,22 +108,15 @@ const reduser = function (state, action) {
             return newState
 
         case 'ADD_NEW_CONTAINER':
-            var urlAddNewContainer = `${src}/effort/createContainer/${state.currentProject}/${action.payload.milestoneName}`
-            // console.log(urlAddNewContainer)
-            console.log(action.payload)
+            var urlAddNewContainer = `${src}/effort/createContainer/${state.currentProject}/${action.payload.mileStoneNumber}`
+            console.log(urlAddNewContainer)
+            // console.log(action.payload)
             state.currentProject != null ?
                 editData(urlAddNewContainer, action.payload, 'UPDATE_CURRENT_PROJECT')
                 : window.alert('You did not select a project!')
             return newState
 
 
-        case 'ADD_TASK':
-            console.log(action.payload);
-            var mileStone = action.payload.mileStoneNumber
-            var containerId = action.payload.containerId
-            var urlAddTask = `${src}/effort/addTask/${state.currentProject}/${mileStone}/${containerId}`;
-            saveData(urlAddTask, action.payload, 'UPDATE_CURRENT_PROJECT')
-            return newState
 
         case 'UPDATE_CURRENT_PROJECT':
             newState.containers = []
@@ -136,6 +125,13 @@ const reduser = function (state, action) {
             getData(urlCurentProject, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
             return newState
 
+        case 'ADD_TASK':
+            console.log(action.payload);
+            var mileStone = action.payload.mileStoneNumber
+            var containerId = action.payload.containerId
+            var urlAddTask = `${src}/effort/addTask/${state.currentProject}/${mileStone}/${containerId}`;
+            saveData(urlAddTask, action.payload, 'UPDATE_CURRENT_PROJECT')
+            return newState
 
         case 'CHANGE_TASK':
             // console.log(action.payload);
@@ -147,8 +143,7 @@ const reduser = function (state, action) {
             return newState
 
         case 'DELETE_TASK':
-        console.log(action.payload);
-        
+            console.log(action.payload);
             var mileStone = action.payload.mileStoneNumber
             var containerId = action.payload.containerId
             var index = action.payload.taskIndex
@@ -166,18 +161,18 @@ const reduser = function (state, action) {
 
 }
 
-function checkStories() {
-    let state_1 = { ...state };
-    state_1.userStorySelected.map(elm => {
-        if (elm != undefined) {
-            state_1.projectUserStory[elm].numOfTasks += 1
-        }
-    })
-    console.log(state_1.projectUserStory);
+// function checkStories() {
+//     let state_1 = { ...state };
+//     state_1.userStorySelected.map(elm => {
+//         if (elm != undefined) {
+//             state_1.projectUserStory[elm].numOfTasks += 1
+//         }
+//     })
+//     console.log(state_1.projectUserStory);
 
-    return state_1
+//     return state_1
 
-}
+// }
 
 
 var store = createStore(reduser, state)

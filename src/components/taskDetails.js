@@ -70,7 +70,10 @@ class TaskDetails extends Component {
                 <ModalHeader >Are you sure you want to delete the task?</ModalHeader>
                 <ModalBody>Deleting the task will delete all data its contains</ModalBody>
                 <ModalFooter>
-                    <Button color="danger" onClick={() => this.deleteTask(this.state.taskIndex, this.state.containerId, this.state.mileStoneNumber)}>Delete</Button>{' '}
+                    <Button color="danger" onClick={() => {
+                        this.deleteTask(this.state.taskIndex, this.state.containerId, this.state.mileStoneNumber)
+                        this.setState({})
+                    }}>Delete</Button>{' '}
                     <Button color="primary" onClick={() => this.setState({ deleteMode: false })}>Cancel</Button>
                 </ModalFooter>
             </Modal>
@@ -116,7 +119,7 @@ class TaskDetails extends Component {
                             </Row>
                         </Card>
                     </Col>
-                    
+
                 </Row>
 
                 <div>

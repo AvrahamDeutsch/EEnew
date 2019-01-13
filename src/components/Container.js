@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Input, Row, Col, FormGroup } from 'reactstrap';
+import { Button, Input, Label, Form, Row, Col, FormGroup } from 'reactstrap';
 import Task from './task'
 import TaskDetails from './taskDetails'
 import store from '../store/store.js'
@@ -16,7 +16,7 @@ class Container extends Component {
             arrayResult: this.props.arrayResult,
             containerName: this.props.containerName,
             mileStoneNumber: this.props.mileStoneNumber,
-            totalWorkNumber: this.props.totalWorkNumber,
+            totalWorkNumber: parseFloat(Number(this.props.totalWorkNumber).toFixed(2)),
             taskContainerUserStory: this.props.taskContainerUserStory,
             // tasksUserStoryArray: [''],
             tasksArray: this.props.tasksArray,
@@ -26,6 +26,7 @@ class Container extends Component {
             taskMode: false,
             milestoneMode: 0,
             addContainerMode: this.props.addContainerMode,
+            editContainerMode: false
         }
     }
 
@@ -40,22 +41,22 @@ class Container extends Component {
         var value = parseInt(e.target.value);
         console.log('Entered mileStoneNumber:', value);
 
-        if (value > -1 && value < 6) {
+        if (value > -1 && value < 5) {
             this.setState({ mileStoneNumber: value, milestoneMode: true });
         }
         else {
-            window.alert('Please enter the number from 0 to 5');
+            window.alert('Please enter the number from 0 to 4');
             e.target.value = this.state.mileStoneNumber;
         }
     }
 
 
-    getTotalWeightedEffort() {
-        var total = 0
-        this.state.arrayResult.map((sum => total += sum.total))
-        this.setState({ totalWorkNumber: total })
-        return total
-    }
+    // getTotalWeightedEffort() {
+    //     var total = 0
+    //     this.state.arrayResult.map((sum => total += sum.total))
+    //     this.setState({ totalWorkNumber: total })
+    //     return total
+    // }
 
 
 
@@ -96,25 +97,21 @@ class Container extends Component {
 
     categorySelected(e) {
         var value = e.target.value;
+        console.log(value);
         this.setState({ category: value })
-        store.dispatch({ type: 'CATEGORY_CHANGED', payload: value })
 
     }
 
     fillUserStorySelect() {
-
         var arr = []
         // console.log(  us ,typeof index);
         // if (this.state.taskContainerUserStory != undefined) {
-            this.props.projectUserStory.map((us, index) => {
-                return index === this.state.taskContainerUserStory
-                    ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)
-                    : arr.push(<option value={index} key={index}>{us.userStory}</option>)
-            })
-            return arr
-        // }else{
-        //     return ''
-        // }
+        this.props.projectUserStory.map((us, index) => {
+            return index === this.state.taskContainerUserStory
+                ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)
+                : arr.push(<option value={index} key={index}>{us.userStory}</option>)
+        })
+        return arr
     }
 
     userStorySelected(e) {
@@ -123,21 +120,23 @@ class Container extends Component {
         this.setState({ taskContainerUserStory: parseInt(value) })
     }
     addTask() {
+        console.log( this.state.value);
+        
+
         return (<Task
             mileStoneNumber={this.state.mileStoneNumber}
             containerId={this.state.containerId}
             taskUserStory={this.state.taskContainerUserStory}
             arrayResult={this.state.arrayResult}
             total='0'
-            addTasksMode={()=>this.addTasksMode()}
+            addTasksMode={() => this.addTasksMode()}
         />)
     }
 
+    // allTasksMode() {
+    //     this.setState({ allTasksMode: !this.state.allTasksMode })
+    // }
 
-    allTasksMode() {
-        this.setState({ allTasksMode: !this.state.allTasksMode })
-    }
-   
     addTasksMode() {
         this.setState({ tasksMode: !this.state.tasksMode })
     }
@@ -161,16 +160,13 @@ class Container extends Component {
                     assumptions={task.assumptions}
                     mileStoneNumber={this.state.mileStoneNumber}
                     containerId={this.state.containerId}
-
                 />
             )
         })
-        //   this.setState({})
         return arr
     }
 
     save() {
-
         if (!this.state.milestoneMode) {
             alert("enter milesone")
         }
@@ -180,13 +176,14 @@ class Container extends Component {
         }
 
         else {
+            console.log(this.state);
+            
             store.dispatch({
                 type: 'ADD_NEW_CONTAINER', payload: {
                     currentCategory: this.state.currentCategory,
                     containerName: this.state.containerName,
-                    milestoneName: this.state.mileStoneNumber,
+                    mileStoneNumber: this.state.mileStoneNumber,
                     days: this.state.totalWorkNumber,
-                    // taskContainerUserStory: this.state.taskContainerUserStory,
                     taskContainerUserStory: this.state.taskContainerUserStory,
                     tasks: this.state.tasksArray,
                     category: this.state.category,
@@ -198,128 +195,120 @@ class Container extends Component {
 
     }
 
+    editContainer() {
+        this.props.changeEditContainerMode(false)
+        store.dispatch({
+            type: 'EDIT_CONTAINER', payload: this.state
+            // {
+            //     containerId: this.state.containerId,
+            //     currentCategory: this.state.currentCategory,
+            //     containerName: this.state.containerName,
+            //     milestoneName: this.state.mileStoneNumber,
+            //     days: this.state.totalWorkNumber,
+            //     taskContainerUserStory: this.state.taskContainerUserStory,
+            //     tasks: this.state.tasksArray,
+            //     category: this.state.category,
+            // }
+        })
+    }
     render() {
 
         return (
-
-
-            <div style={{ width: '100%', border: 'solid gray 1px', margin: '5px', marginLeft: '0px' }}>
-                <Row style={{ width: '100%', margin: '5px', marginLeft: '0px', textAlign: 'left' }}>
-                    <Col sm="6" md="3" ><b>Task Container Name:</b></Col>
-                    <Col sm="6" md="3">
-                        <Input
-                            style={{ fontSize: '20px', width: '100%' }}
-                            size='40'
-                            onBlur={(e) => this.taskContainerNameChange(e)}
-                            type="text"
-                            placeholder={this.state.containerName}
-                        />
-                    </Col>
-                    {/* <Col sm="6" md='2'>Number Of Tasks:</Col> */}
-                    <Col sm="6" md="1">
-                        <div style={{ fontSize: '20px', width: '100%', paddingLeft: '3px' }}>
-                            {this.state.tasksArray !== undefined
-                                ? `Number of tasks is ${this.state.tasksArray.length}`
-                                : 'Number of tasks is 0'}</div>
-                    </Col>
-                    <Col sm="6" md="2">Milestone:</Col>
-                    <Col sm="6" md="1">
-                        <Input
-                            style={{ fontSize: '20px', width: '100%', paddingLeft: '3px' }}
-                            onChange={(e) => this.mileStoneChange(e)}
-                            value={this.state.mileStoneNumber}
-                            type="number"
-                            min='0'
-                            max='5'
-
-                        />
-                    </Col>
-                </Row>
-                <Row style={{ width: '100%', margin: '5px', marginLeft: '0px' }} >
-                    <Col style={{ textAlign: 'left' }} sm="6" md='6'>
-                        <Row>
-                            <Col sm="6" md='6'>
-                                Category:
-                            </Col>
-                            <Col sm="6" md='6'>
-                                <FormGroup>
-                                    {/* <Label for="exampleSelect">Category:</Label> */}
-                                    <Input
-                                        type="select"
-                                        name="select"
-                                        id="exampleSelect"
-                                        onChange={(e) => this.categorySelected(e)}
-                                    >
-                                        {this.fillcategorySelect()}
-                                    </Input>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm="6" md='6'>
-                                User Story:
-                            </Col>
-                            <Col sm="6" md='6'>
-                                <FormGroup>
-                                    {/* <Label for="exampleSelect">User Story:</Label> */}
-                                    <Input
-                                        type="select"
-                                        name="select"
-                                        id="exampleSelect"
-                                        onChange={(e) => this.userStorySelected(e)}
-                                    >
-                                        {this.fillUserStorySelect()}
-                                    </Input>
-                                </FormGroup>
-
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col sm="6" md='6'>
-                        <Row>
-                            <Col>
-                                <b>{`Total W.E. ${this.state.totalWorkNumber}`}</b>
-                                {/* <b>{this.state.totalWorkNumber == undefined ? 'Total W.E. 0':  `Total W.E. ${this.state.totalWorkNumber}`}</b> */}
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row style={{ width: '90%', margin: '5px', marginLeft: '0px' }}>
-                    <Col>
-                        {this.props.addContainerMode
-                            ? <Button onClick={() => this.save()}>Save</Button>
-                            : <Button onClick={() => this.isOpen()}>Add task</Button>}
-                            {/* // : <Button onClick={() => store.dispatch({ type: 'ADD_TASK_MODE' })}>Add task</Button>} */}
-
-                    </Col>
-                    <Col>
-                        {!this.props.addContainerMode
-                            ? <Button onClick={() => this.setState({ allTasksMode: !this.state.allTasksMode })}>All tasks</Button>
-                            : null}
-
-
+            <Form>
+                <Row form>
+                    <Col md={12}>
+                        <FormGroup>
+                            <Label for="name">Task Container Name:</Label>
+                            <Input
+                                id='name'
+                                style={{ fontSize: '20px', width: '100%' }}
+                                onBlur={(e) => this.taskContainerNameChange(e)}
+                                type="text"
+                                placeholder={this.state.containerName}
+                            />
+                        </FormGroup>
                     </Col>
                 </Row>
 
-                <Row style={{ width: '90%', margin: '5px', marginLeft: '0px', borderTop: 'solid grey 1px' }}>
+                <Row form>
+                    <Col md={12}>
+                        <FormGroup>
+                            <Label for="exampleSelect">User-story/Requirement:</Label>
+                            <Input
+                                type="select"
+                                name="select"
+                                id="exampleSelect"
+                                onChange={(e) => this.userStorySelected(e)}
+                            >
+                                {this.fillUserStorySelect()}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+                </Row>
+
+                <Row form>
+                    <Col md={8}>
+                        <FormGroup>
+                            <Label for="exampleSelect">Category:</Label>
+                            <Input
+                                type="select"
+                                name="select"
+                                id="exampleSelect"
+                                onChange={(e) => this.categorySelected(e)}
+                            >
+                                {this.fillcategorySelect()}
+                            </Input>
+                        </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                        <FormGroup>
+                            <Label for="milestone">Milestone:</Label>
+                            <Input
+                                id='milestone'
+                                onChange={(e) => this.mileStoneChange(e)}
+                                value={this.state.mileStoneNumber}
+                                type="number"
+                                min='0'
+                                max='4'
+                            />
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>                <Col >
+                    <div style={{ fontSize: '20px', width: '100%', paddingLeft: '3px' }}>
+                        {this.state.tasksArray !== undefined
+                            ? `Number of tasks is ${this.state.tasksArray.length}`
+                            : ''}</div>
+                </Col>
+                </Row>
+                <Row>
                     <Col>
-
-                        {/* {this.props.addTaskMode ? this.addTask() : null} */}
-                        {/* {this.state.taskMode ? this.addTask() : null} */}
-
-                        {/* {this.state.allTasksMode ? this.wiewAllTasks() : null} */}
-
+                        <b>{`Total W.E. ${this.state.totalWorkNumber}`}</b>
+                        {/* <b>{ this.state.totalWorkNumber < 1 ? 'Total W.E. 0':  `Total W.E. ${this.state.totalWorkNumber}`}</b> */}
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        {/* <Task /> */}
-                        {/* {this.state.taskMode ? <Button onClick={() => (this.props.dispatch({ type: "SAVE_TASK_CONTAINER_DATA", payload: this.state }))}>Save</Button> : null} */}
-
+                        {!this.props.addContainerMode
+                            ? <Button onClick={() => this.save()}>Save</Button>
+                            :<Button color="success" onClick={() => this.editContainer()}>Update</Button>}
+                        {/* {!this.props.addContainerMode
+                            ? <Button onClick={() => this.setState({ allTasksMode: !this.state.allTasksMode })}>All tasks</Button>
+                        : null}{' '} */}
+                        {!this.props.editContainerMode
+                            // ? <Button color="success" onClick={() => this.setState({ editContainerMode: !this.state.editContainerMode })}>Update</Button>
+                        
+                            ?<Button color="success" onClick={() => this.editContainer()}>Update</Button>
+                            : null}{' '}
+                        {/* {this.props.editContainerMode ? this.editContainer() : null} */}
+                        {/* {!this.props.addContainerMode
+                            // ? <Button color="success" onClick={() => this.setState({ editContainerMode: !this.state.editContainerMode })}>Update</Button>
+                            ? <Button color="success" onClick={()=>this.props.changeEditContainerMode(true)}>Update</Button>
+                            : null}{' '}
+                        {!this.props.addContainerMode ? this.editContainer() : null} */}
                     </Col>
                 </Row>
-
-            </div>
+            </Form >
         )
 
     }
