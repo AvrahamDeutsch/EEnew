@@ -83,17 +83,18 @@ class App extends Component {
   specificContainer() {
 
     var container = this.props.containers[this.state.value];
-    // console.log(parseInt(this.state.value));
+    console.log(container);
     return (
       <ContainerDetails
         key={this.state.value}
         containerName={container.containerName}
-        mileStoneNumber={container.milestoneName}
+        mileStoneNumber={container.mileStoneNumber}
+        numberOfTasks={container.tasks.length}
         currentCategory={container.category}
         totalWorkNumber={container.days}
         tasksArray={container.tasks}
         taskContainerUserStory={container.taskContainerUserStory}
-        id={container._id}
+        containerId={container._id}
         addContainerMode={true}
       />)
   }
@@ -104,7 +105,8 @@ class App extends Component {
       <Container
       containerName ='Enter the container name'
       mileStoneNumber='Choose a num'
-      addContainerMode={this.state.addContainerMode}
+      // addContainerMode={this.state.addContainerMode}
+      addContainerMode={false}
       totalWorkNumber={0}
 
       />
@@ -114,10 +116,9 @@ class App extends Component {
   allContainers() {
     var arr = []
     var props = this.props.containers;
-    // console.log(props.length);
-    if (props.length > 0) {
+        if (props.length > 0) {
       props.map((container, index) => {
-        console.log(container);
+        // console.log(container);
         return arr.push(
           <Row>
             <Col>

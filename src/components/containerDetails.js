@@ -22,18 +22,13 @@ class ContainerDetails extends Component {
             viewTasksMode: false,
             addTaskMode: false,
             containerEditMode: false
-
         }
-    }
-
-    componentWillUpdate() {
-
     }
 
     viewAllTasks() {
         var arr = [];
         this.props.tasksArray.map((task, index) => {
-            console.log(task);
+            // console.log(task);
             return arr.push(<Row>
                 <Col>
                     <TaskDetails
@@ -50,13 +45,18 @@ class ContainerDetails extends Component {
                         assumptions={task.assumptions}
                         mileStoneNumber={this.props.mileStoneNumber}
                         containerId={this.props.containerId}
-                    /> </Col></Row>
+                        currentCategory={this.props.currentCategory}
+                        currentComplexity={task.currentComplexity}
+                    />
+                </Col>
+            </Row>
             )
         })
         if (arr.length >= 1) {
             arr.push(
                 <Row>
                     <Col>
+                    <br/>
                         {this.state.viewTasksMode ? <Button onClick={() => this.setState({ viewTasksMode: !this.state.viewTasksMode })} >close</Button> : null}
                     </Col>
                 </Row>)
@@ -64,17 +64,18 @@ class ContainerDetails extends Component {
         return arr
     }
 
-      addTask() {
-        //  store.dispatch({ type: 'CATEGORY_CHANGED', payload: this.props.currentCategory })
+    addTask() {
 
-        return  (
+        return (
             <Task
                 mileStoneNumber={this.props.mileStoneNumber}
                 containerId={this.props.containerId}
                 taskUserStory={this.props.taskContainerUserStory}
-                arrayResult={this.props.arrayResult}
-                total='0'
-            // addTasksMode={()=>this.addTasksMode()}
+                currentCategory={this.props.currentCategory}
+                complexity={0}
+                risk={0}
+                LearningDays={0}
+                componentSelectedMode={false}
             />)
     }
 
@@ -94,7 +95,7 @@ class ContainerDetails extends Component {
                 totalWorkNumber={this.props.totalWorkNumber}
                 tasksArray={this.props.tasksArray}
                 taskContainerUserStory={this.props.taskContainerUserStory}
-                id={this.props.id}
+                containerId={this.props.containerId}
                 addContainerMode={true}
                 changeEditContainerMode={(bool) => this.changeEditContainerMode(bool)}
                 editContainerMode={this.state.containerEditMode}
@@ -124,17 +125,13 @@ class ContainerDetails extends Component {
                             <Col>User story: {this.props.taskContainerUserStory ? this.props.projectUserStory[this.props.taskContainerUserStory].userStory : null}</Col>
                         </Row>
                         <Row>
-                            <Col><h5>total e.w. : {this.props.totalWorkNumber}</h5></Col>
+                            <Col><h5>Total e.w. : {this.props.totalWorkNumber}</h5></Col>
                         </Row>
                         <Row>
                             <Col>
                                 {this.props.tasksArray.length >= 1 ? <Button onClick={() => this.setState({ viewTasksMode: !this.state.viewTasksMode })} >all tasks</Button> : null}{' '}
                                 <Button onClick={() => this.setState({ addTaskMode: !this.state.addTaskMode })} >add task</Button>{' '}
-                                <Button onClick={() => {
-                                    this.setState({ containerEditMode: !this.state.containerEditMode })
-                                }} >edit</Button>{' '}
-
-
+                                <Button onClick={() => this.setState({ containerEditMode: !this.state.containerEditMode })} >edit</Button>{' '}
                             </Col>
 
                         </Row>

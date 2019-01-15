@@ -15,7 +15,6 @@ const state = {
     containers: [],
     mileStone: [],
     catalog: [],
-    addContainerMode: false,
 
 
 
@@ -84,12 +83,13 @@ const reduser = function (state, action) {
 
         case 'CATEGORY_CHANGED':
             var urlChangeCategory = `${categoryPath}/find_category/?category=${action.payload}`
-            // console.log(urlChangeCategory);
+            console.log(urlChangeCategory);
             getData(urlChangeCategory, 'FILL_COMPONENTS')
             return newState
 
         case 'FILL_COMPONENTS':
             let arr1 = [];
+            // console.log(action.payload);
             action.payload.arrayResult.map((component, index) => {
                 return arr1.push({
                     id: component._id,
@@ -100,23 +100,26 @@ const reduser = function (state, action) {
             })
             console.log(arr1);
             newState.arrayResult = arr1;
-            console.log(newState.arrayResult);
-
+            console.log(newState);
             return newState
+
         case 'CHANGE_ADD_CONTAINER_MODE':
             newState.addContainerMode = !newState.addContainerMode;
             return newState
 
         case 'ADD_NEW_CONTAINER':
             var urlAddNewContainer = `${src}/effort/createContainer/${state.currentProject}/${action.payload.mileStoneNumber}`
-            console.log(urlAddNewContainer)
             // console.log(action.payload)
             state.currentProject != null ?
                 editData(urlAddNewContainer, action.payload, 'UPDATE_CURRENT_PROJECT')
                 : window.alert('You did not select a project!')
             return newState
 
-
+        case 'EDIT_CONTAINER':
+            var urlEditContainer = `${src}/effort/editContainer/${state.currentProject}/${action.payload.mileStoneNumber}/${action.payload.containerId}`
+            // console.log(urlEditContainer);
+            editData(urlEditContainer, action.payload, 'UPDATE_CURRENT_PROJECT')
+            return newState
 
         case 'UPDATE_CURRENT_PROJECT':
             newState.containers = []
@@ -126,7 +129,7 @@ const reduser = function (state, action) {
             return newState
 
         case 'ADD_TASK':
-            console.log(action.payload);
+            // console.log(action.payload);
             var mileStone = action.payload.mileStoneNumber
             var containerId = action.payload.containerId
             var urlAddTask = `${src}/effort/addTask/${state.currentProject}/${mileStone}/${containerId}`;
@@ -143,7 +146,7 @@ const reduser = function (state, action) {
             return newState
 
         case 'DELETE_TASK':
-            console.log(action.payload);
+            // console.log(action.payload);
             var mileStone = action.payload.mileStoneNumber
             var containerId = action.payload.containerId
             var index = action.payload.taskIndex
@@ -155,25 +158,9 @@ const reduser = function (state, action) {
             break
 
     }
-
-
     return newState
 
 }
-
-// function checkStories() {
-//     let state_1 = { ...state };
-//     state_1.userStorySelected.map(elm => {
-//         if (elm != undefined) {
-//             state_1.projectUserStory[elm].numOfTasks += 1
-//         }
-//     })
-//     console.log(state_1.projectUserStory);
-
-//     return state_1
-
-// }
-
 
 var store = createStore(reduser, state)
 export default store

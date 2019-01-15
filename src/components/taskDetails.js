@@ -43,7 +43,7 @@ class TaskDetails extends Component {
                 risk={this.state.risk}
                 LearningDays={this.state.LearningDays}
                 total={this.state.total}
-                taskUserStory={this.state.taskUserStory}
+                taskUserStory={this.state.taskUserStory.index}
                 details={this.state.details}
                 assumptions={this.state.assumptions}
                 mileStoneNumber={this.state.mileStoneNumber}
@@ -52,6 +52,9 @@ class TaskDetails extends Component {
                 arrayResult={this.state.arrayResult}
                 upDate={true}
                 taskIndex={this.state.taskIndex}
+                currentCategory={this.props.currentCategory}
+                component={this.state.component}
+                componentSelectedMode={true}
                 changeEditMode={(bool) => this.changeEditMode(bool)}
             />
         )
@@ -61,23 +64,25 @@ class TaskDetails extends Component {
         console.log(taskIndex);
         store.dispatch({ type: 'DELETE_TASK', payload: { taskIndex, containerId, mileStoneNumber } })
         this.setState({ deleteMode: false })
+        this.setState({})
     }
 
     deleteDialog() {
 
-        return <div>
+        return (<div>
             <Modal isOpen={this.state.deleteMode}>
                 <ModalHeader >Are you sure you want to delete the task?</ModalHeader>
                 <ModalBody>Deleting the task will delete all data its contains</ModalBody>
                 <ModalFooter>
                     <Button color="danger" onClick={() => {
                         this.deleteTask(this.state.taskIndex, this.state.containerId, this.state.mileStoneNumber)
-                        this.setState({})
                     }}>Delete</Button>{' '}
                     <Button color="primary" onClick={() => this.setState({ deleteMode: false })}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>
+        )
+       
     }
 
     render() {

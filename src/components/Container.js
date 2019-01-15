@@ -10,22 +10,18 @@ class Container extends Component {
         super(props)
 
         this.state = {
-            containerId: this.props.id,
-            // currentCategory: '',
-            currentCategory: this.props.category,
-            arrayResult: this.props.arrayResult,
+            containerId: this.props.containerId,
+            currentCategory: this.props.currentCategory,
+            // arrayResult: this.props.arrayResult,
             containerName: this.props.containerName,
             mileStoneNumber: this.props.mileStoneNumber,
             totalWorkNumber: parseFloat(Number(this.props.totalWorkNumber).toFixed(2)),
             taskContainerUserStory: this.props.taskContainerUserStory,
-            // tasksUserStoryArray: [''],
             tasksArray: this.props.tasksArray,
             category: this.props.currentCategory,
             allTasksMode: this.props.allTasksMode,
-            // allTasksMode:true,
             taskMode: false,
             milestoneMode: 0,
-            addContainerMode: this.props.addContainerMode,
             editContainerMode: false
         }
     }
@@ -34,12 +30,12 @@ class Container extends Component {
     taskContainerNameChange(e) {
         var value = e.target.value;
         this.setState({ containerName: value });
-        console.log(value);
+        // console.log(value);
     }
 
     mileStoneChange(e) {
         var value = parseInt(e.target.value);
-        console.log('Entered mileStoneNumber:', value);
+        // console.log('Entered mileStoneNumber:', value);
 
         if (value > -1 && value < 5) {
             this.setState({ mileStoneNumber: value, milestoneMode: true });
@@ -80,9 +76,9 @@ class Container extends Component {
     // }
 
 
-    isOpen() {
-        this.setState({ taskMode: !this.state.taskMode })
-    }
+    // isOpen() {
+    //     this.setState({ taskMode: !this.state.taskMode })
+    // }
 
     fillcategorySelect() {
         var arr = [<option >select your category</option>]
@@ -119,52 +115,52 @@ class Container extends Component {
         console.log(value);
         this.setState({ taskContainerUserStory: parseInt(value) })
     }
-    addTask() {
-        console.log( this.state.value);
+    // addTask() {
+    //     console.log( this.state.value);
         
 
-        return (<Task
-            mileStoneNumber={this.state.mileStoneNumber}
-            containerId={this.state.containerId}
-            taskUserStory={this.state.taskContainerUserStory}
-            arrayResult={this.state.arrayResult}
-            total='0'
-            addTasksMode={() => this.addTasksMode()}
-        />)
-    }
+    //     return (<Task
+    //         mileStoneNumber={this.state.mileStoneNumber}
+    //         containerId={this.state.containerId}
+    //         taskUserStory={this.state.taskContainerUserStory}
+    //         arrayResult={this.state.arrayResult}
+    //         total='0'
+    //         addTasksMode={() => this.addTasksMode()}
+    //     />)
+    // }
 
     // allTasksMode() {
     //     this.setState({ allTasksMode: !this.state.allTasksMode })
     // }
 
-    addTasksMode() {
-        this.setState({ tasksMode: !this.state.tasksMode })
-    }
+    // addTasksMode() {
+    //     this.setState({ tasksMode: !this.state.tasksMode })
+    // }
 
-    wiewAllTasks() {
-        var arr = [];
-        this.state.tasksArray.map((task, index) => {
-            console.log(task);
-            return arr.push(
-                <TaskDetails
-                    key={index}
-                    taskIndex={index}
-                    taskName={task.taskName}
-                    component={task.component}
-                    complexity={task.complexity}
-                    risk={task.risk}
-                    LearningDays={task.LearningDays}
-                    total={task.days}
-                    taskUserStory={task.taskUserStory}
-                    details={task.details}
-                    assumptions={task.assumptions}
-                    mileStoneNumber={this.state.mileStoneNumber}
-                    containerId={this.state.containerId}
-                />
-            )
-        })
-        return arr
-    }
+    // wiewAllTasks() {
+    //     var arr = [];
+    //     this.state.tasksArray.map((task, index) => {
+    //         console.log(task);
+    //         return arr.push(
+    //             <TaskDetails
+    //                 key={index}
+    //                 taskIndex={index}
+    //                 taskName={task.taskName}
+    //                 component={task.component}
+    //                 complexity={task.complexity}
+    //                 risk={task.risk}
+    //                 LearningDays={task.LearningDays}
+    //                 total={task.days}
+    //                 taskUserStory={task.taskUserStory}
+    //                 details={task.details}
+    //                 assumptions={task.assumptions}
+    //                 mileStoneNumber={this.state.mileStoneNumber}
+    //                 containerId={this.state.containerId}
+    //             />
+    //         )
+    //     })
+    //     return arr
+    // }
 
     save() {
         if (!this.state.milestoneMode) {
@@ -196,19 +192,21 @@ class Container extends Component {
     }
 
     editContainer() {
+        console.log(this.state);
+        
         this.props.changeEditContainerMode(false)
         store.dispatch({
-            type: 'EDIT_CONTAINER', payload: this.state
-            // {
-            //     containerId: this.state.containerId,
-            //     currentCategory: this.state.currentCategory,
-            //     containerName: this.state.containerName,
-            //     milestoneName: this.state.mileStoneNumber,
-            //     days: this.state.totalWorkNumber,
-            //     taskContainerUserStory: this.state.taskContainerUserStory,
-            //     tasks: this.state.tasksArray,
-            //     category: this.state.category,
-            // }
+            type: 'EDIT_CONTAINER', payload:
+            {
+                containerId: this.state.containerId,
+                currentCategory: this.state.currentCategory,
+                containerName: this.state.containerName,
+                mileStoneNumber: this.state.mileStoneNumber,
+                days: this.state.totalWorkNumber,
+                taskContainerUserStory: this.state.taskContainerUserStory,
+                tasks: this.state.tasksArray,
+                category: this.state.category,
+            }
         })
     }
     render() {
@@ -224,7 +222,8 @@ class Container extends Component {
                                 style={{ fontSize: '20px', width: '100%' }}
                                 onBlur={(e) => this.taskContainerNameChange(e)}
                                 type="text"
-                                placeholder={this.state.containerName}
+                                defaultValue={this.state.containerName}
+                                // placeholder={this.state.containerName}
                             />
                         </FormGroup>
                     </Col>
@@ -284,7 +283,6 @@ class Container extends Component {
                 <Row>
                     <Col>
                         <b>{`Total W.E. ${this.state.totalWorkNumber}`}</b>
-                        {/* <b>{ this.state.totalWorkNumber < 1 ? 'Total W.E. 0':  `Total W.E. ${this.state.totalWorkNumber}`}</b> */}
                     </Col>
                 </Row>
                 <Row>
@@ -292,20 +290,6 @@ class Container extends Component {
                         {!this.props.addContainerMode
                             ? <Button onClick={() => this.save()}>Save</Button>
                             :<Button color="success" onClick={() => this.editContainer()}>Update</Button>}
-                        {/* {!this.props.addContainerMode
-                            ? <Button onClick={() => this.setState({ allTasksMode: !this.state.allTasksMode })}>All tasks</Button>
-                        : null}{' '} */}
-                        {!this.props.editContainerMode
-                            // ? <Button color="success" onClick={() => this.setState({ editContainerMode: !this.state.editContainerMode })}>Update</Button>
-                        
-                            ?<Button color="success" onClick={() => this.editContainer()}>Update</Button>
-                            : null}{' '}
-                        {/* {this.props.editContainerMode ? this.editContainer() : null} */}
-                        {/* {!this.props.addContainerMode
-                            // ? <Button color="success" onClick={() => this.setState({ editContainerMode: !this.state.editContainerMode })}>Update</Button>
-                            ? <Button color="success" onClick={()=>this.props.changeEditContainerMode(true)}>Update</Button>
-                            : null}{' '}
-                        {!this.props.addContainerMode ? this.editContainer() : null} */}
                     </Col>
                 </Row>
             </Form >
