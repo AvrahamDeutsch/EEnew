@@ -65,7 +65,7 @@ class Task extends Component {
     fillUserStorySelect() {
         var arr = []
         this.props.projectUserStory.map((us, index) => {
-            console.log(typeof this.state.taskUserStory, this.state.taskUserStory);
+            // console.log(typeof this.state.taskUserStory, this.state.taskUserStory);
             if (this.state.taskUserStory != undefined) {
                 this.state.taskUserStory === index
                     ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)

@@ -99,10 +99,12 @@ class Container extends Component {
     }
 
     fillUserStorySelect() {
-        var arr = []
+        var arr = [<option>select user story</option>]
         // console.log(  us ,typeof index);
         // if (this.state.taskContainerUserStory != undefined) {
         this.props.projectUserStory.map((us, index) => {
+            console.log(us);
+            
             return index === this.state.taskContainerUserStory
                 ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)
                 : arr.push(<option value={index} key={index}>{us.userStory}</option>)
@@ -117,7 +119,7 @@ class Container extends Component {
     }
     // addTask() {
     //     console.log( this.state.value);
-        
+
 
     //     return (<Task
     //         mileStoneNumber={this.state.mileStoneNumber}
@@ -173,7 +175,7 @@ class Container extends Component {
 
         else {
             console.log(this.state);
-            
+
             store.dispatch({
                 type: 'ADD_NEW_CONTAINER', payload: {
                     currentCategory: this.state.currentCategory,
@@ -193,7 +195,7 @@ class Container extends Component {
 
     editContainer() {
         console.log(this.state);
-        
+
         this.props.changeEditContainerMode(false)
         store.dispatch({
             type: 'EDIT_CONTAINER', payload:
@@ -222,8 +224,8 @@ class Container extends Component {
                                 style={{ fontSize: '20px', width: '100%' }}
                                 onBlur={(e) => this.taskContainerNameChange(e)}
                                 type="text"
-                                defaultValue={this.state.containerName}
-                                // placeholder={this.state.containerName}
+                                placeholder={!this.state.containerName ? 'Enter the container name' : null}
+                                defaultValue={this.state.containerName ? this.state.containerName : null}
                             />
                         </FormGroup>
                     </Col>
@@ -232,7 +234,7 @@ class Container extends Component {
                 <Row form>
                     <Col md={12}>
                         <FormGroup>
-                            <Label for="exampleSelect">User-story/Requirement:</Label>
+                            <Label  for="exampleSelect">User-story/Requirement:</Label>
                             <Input
                                 type="select"
                                 name="select"
@@ -287,9 +289,8 @@ class Container extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        {!this.props.addContainerMode
-                            ? <Button onClick={() => this.save()}>Save</Button>
-                            :<Button color="success" onClick={() => this.editContainer()}>Update</Button>}
+                        {this.props.addContainerMode ? <Button onClick={() => this.save()}>Save</Button>:null}
+                        {this.props.editContainerMode ? <Button color="success" onClick={() => this.editContainer()}>Update</Button>:null}
                     </Col>
                 </Row>
             </Form >

@@ -3,21 +3,16 @@ import { getData, editData, saveData, deleteData } from './axios.js'
 
 
 const state = {
-    // currentProject: null,
-    currentProject: {
+    currentProject: null,
+    // currentProject: {
 
-    },
+    // },
     categories: [],
-    arrayResult: [],
+    // arrayResult: [],
     projects: [],
     projectUserStory: [],
-    userStorySelected: [],
     containers: [],
     mileStone: [],
-    catalog: [],
-
-
-
 }
 
 var src = 'http://10.2.3.128:5000/api'
@@ -48,19 +43,13 @@ const reduser = function (state, action) {
             return newState
 
         case 'CURRENT_PROJECT':
-            newState.projectUserStory = []
-            newState.containers = []
             newState.mileStone = []
             newState.currentProject = action.payload;
-            // var urlCurentProject = `${src}/userStory/allStories/${action.payload}`
             var urlCurentProject = `${src}/userStory/allUserStories/${action.payload}`
-            // console.log(urlCurentProject);
             getData(urlCurentProject, 'FILL_USER_STORY_BY_SPECIFIC_PROJECT')
             return newState
 
-
         case 'FILL_USER_STORY_BY_SPECIFIC_PROJECT':
-            // console.log('us=', action.payload);
             newState.projectUserStory = action.payload
             var urlUserStory = `${src}/effort/allData/${state.currentProject}`
             getData(urlUserStory, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
@@ -69,6 +58,8 @@ const reduser = function (state, action) {
         /* this function filling the containers array in the state and
         check for evry user story how many tasks exist  */
         case 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT':
+            newState.containers = [];
+            newState.mileStone = [];
             console.log('action', action.payload);
             newState.mileStone = action.payload.map((ms => {
                 if (ms != null) {
@@ -76,32 +67,35 @@ const reduser = function (state, action) {
                     ms.containers.map(elm => {
                         return newState.containers.push(elm)
                     })
+                } else {
+                    return null
                 }
-                return null
+
+                console.log(newState.mileStone, ' => ', newState.containers);
             }))
             return newState
 
-        case 'CATEGORY_CHANGED':
-            var urlChangeCategory = `${categoryPath}/find_category/?category=${action.payload}`
-            console.log(urlChangeCategory);
-            getData(urlChangeCategory, 'FILL_COMPONENTS')
-            return newState
+        // case 'CATEGORY_CHANGED':
+        //     var urlChangeCategory = `${categoryPath}/find_category/?category=${action.payload}`
+        //     console.log(urlChangeCategory);
+        //     getData(urlChangeCategory, 'FILL_COMPONENTS')
+        //     return newState
 
-        case 'FILL_COMPONENTS':
-            let arr1 = [];
-            // console.log(action.payload);
-            action.payload.arrayResult.map((component, index) => {
-                return arr1.push({
-                    id: component._id,
-                    category: component.category,
-                    component: component.component,
-                    complexity: [component.low_complexity, component.med_complexity, component.high_complexity]
-                })
-            })
-            console.log(arr1);
-            newState.arrayResult = arr1;
-            console.log(newState);
-            return newState
+        // case 'FILL_COMPONENTS':
+        //     let arr1 = [];
+        //     // console.log(action.payload);
+        //     action.payload.arrayResult.map((component, index) => {
+        //         return arr1.push({
+        //             id: component._id,
+        //             category: component.category,
+        //             component: component.component,
+        //             complexity: [component.low_complexity, component.med_complexity, component.high_complexity]
+        //         })
+        //     })
+        //     console.log(arr1);
+        //     newState.arrayResult = arr1;
+        //     console.log(newState);
+        //     return newState
 
         case 'CHANGE_ADD_CONTAINER_MODE':
             newState.addContainerMode = !newState.addContainerMode;
@@ -117,16 +111,19 @@ const reduser = function (state, action) {
 
         case 'EDIT_CONTAINER':
             var urlEditContainer = `${src}/effort/editContainer/${state.currentProject}/${action.payload.mileStoneNumber}/${action.payload.containerId}`
-            // console.log(urlEditContainer);
+            console.log(urlEditContainer);
             editData(urlEditContainer, action.payload, 'UPDATE_CURRENT_PROJECT')
-            return newState
+            return newState;
+
+        case 'DELETE_CONTAINER':
+            var urlDeleteContainer = `${src}/effort/deleteContainer/${state.currentProject}/${action.payload.mileStoneNumber}/${action.payload.containerId}`;
+            deleteData(urlDeleteContainer, { type: 'UPDATE_CURRENT_PROJECT', payload: state.currentProject });
+            return newState;
 
         case 'UPDATE_CURRENT_PROJECT':
-            newState.containers = []
-            newState.mileStone = []
-            var urlCurentProject = `${src}/effort/allData/${state.currentProject}`
-            getData(urlCurentProject, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
-            return newState
+            var urlCurentProject = `${src}/effort/allData/${state.currentProject}`;
+            getData(urlCurentProject, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT');
+            return newState;
 
         case 'ADD_TASK':
             // console.log(action.payload);
@@ -151,11 +148,11 @@ const reduser = function (state, action) {
             var containerId = action.payload.containerId
             var index = action.payload.taskIndex
             var urlDeleteTask = `${src}/effort/deleteTask/${state.currentProject}/${mileStone}/${containerId}/${index}`;
-            deleteData(urlDeleteTask, action.payload, 'UPDATE_CURRENT_PROJECT')
+            deleteData(urlDeleteTask, { type: 'UPDATE_CURRENT_PROJECT', payload: state.currentProject })
             return newState
 
         default:
-            break
+        // return newState
 
     }
     return newState
