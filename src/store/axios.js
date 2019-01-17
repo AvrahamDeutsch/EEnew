@@ -30,10 +30,10 @@ export var saveData = (url, data, type) => {
 }
 
 
-export var deleteData = (url, type) => {
+export var deleteData = (url, dis) => {
     axios.delete(url)
     .then(function(res) {
-        // console.log(res);
-        store.dispatch({type: type});
+        console.log(dis);
+        store.dispatch({type:dis.type, payload:dis.payload });
     });
 }

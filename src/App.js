@@ -14,9 +14,9 @@ class App extends Component {
 
       currentContainer: null,
       containerSelectMode: false,
-      addContainerMode: this.props.addContainerMode,
-      value: null
-
+      // addContainerMode: this.props.addContainerMode,
+      value: null,
+      projectUserStory: []
     }
   }
 
@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   fillProgectsSelect() {
-    var arr = []
+    var arr = [<option>select project</option>]
     this.props.projects.map((project, index) => {
       project._id === this.props.currentProject
         ? arr.push(<option selected key={index} value={project._id}>{project.projectName}</option>)
@@ -103,11 +103,10 @@ class App extends Component {
 
     return (
       <Container
-      containerName ='Enter the container name'
-      mileStoneNumber='Choose a num'
-      // addContainerMode={this.state.addContainerMode}
-      addContainerMode={false}
-      totalWorkNumber={0}
+        // containerName ='Enter the container name'
+        mileStoneNumber='Choose a num'
+        addContainerMode={true}
+        totalWorkNumber={0}
 
       />
     )
@@ -116,7 +115,8 @@ class App extends Component {
   allContainers() {
     var arr = []
     var props = this.props.containers;
-        if (props.length > 0) {
+    // var props = this.state.containers;
+    if (props.length > 0) {
       props.map((container, index) => {
         // console.log(container);
         return arr.push(
@@ -142,52 +142,35 @@ class App extends Component {
     return arr
   }
 
-  // fillMilestoneSelect() {
-  //   var arr = []
-  //   this.props.mileStone.map((ms, index) => {
-  //     return arr
-  //     // arr.push(<option  key = {index} value >{ms.milestoneName}</option>)
-  //   })
-  //   return arr
-  // }
-
-  // MilestoneSelected(e) {
-  //   var value = e.target.value;
-  //   console.log(value);
-  //   // store.dispatch({type:'CURRENT_PROJECT', payload: value})
-  // }
-
   userStoryList() {
 
     let arr = [];
-    this.props.projectUserStory.map((elm, index) => {
-      arr.push(
-        <ListGroupItem
-          color={elm.numOfTasks == 0 ? "warning" : "info"}
-          className="justify-content-between">{elm.userStory} <Badge pill>{elm.numOfTasks}</Badge>
-        </ListGroupItem>
-      )
-    })
+      this.props.projectUserStory.map((elm, index) => {
+        arr.push(
+          <ListGroupItem
+            color={elm.numOfTasks == 0 ? "warning" : "info"}
+            className="justify-content-between">{elm.userStory} <Badge pill>{elm.numOfTasks}</Badge>
+          </ListGroupItem>
+        )
+      })
+
+    // }
     return arr
   }
 
   Home() {
     return (
-      <div>
-        <h3>Welcome to Effort-Evaluator</h3>
-        <FormGroup>
-          <Label for="exampleSelect">Select project</Label>
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            placeholder='Select project'
-            onChange={(e) => this.projectSelected(e)}
-          >
-            {this.fillProgectsSelect()}
-          </Input>
-        </FormGroup>
-      </div>
+      <FormGroup className='col-4 ml-auto'>
+        <Input
+          type="select"
+          name="select"
+          id="exampleSelect"
+          placeholder='Select project'
+          onChange={(e) => this.projectSelected(e)}
+        >
+          {this.fillProgectsSelect()}
+        </Input>
+      </FormGroup>
     )
   }
 
@@ -199,22 +182,29 @@ class App extends Component {
         <container >
           <Row >
             <Col className="header">
-              <header className={'container py-2'}>Effort Evaluator</header>
+              <header className={'container'}>
+                <div className="row">
+
+                  <div className='col-3 pt-2'>Effort Evaluator</div>
+                  {this.Home()}
+                </div>
+              </header>
             </Col>
           </Row>
           <Row>
-            <Col>
-              <li> <Link className='link' to='/' >Home page</Link></li>
-              <li> <Link className='link' to='/userStory/list' >user story array</Link></li>
+            <Col style={{ right: '-10px' }}>
+              <br />
+              <li> <Link className='link' to='/' >user story array</Link></li>
+              {/* <li> <Link className='link' to='/userStory/list' >user story array</Link></li> */}
               <li> <Link className='link' to='/container/all-containers' >view all containers</Link></li>
               <li> <Link className='link' to={'/container/add-new-container'} >add new container</Link></li>
               <li> <Link className='link' to={'/container/select-container'} >select container</Link></li>
             </Col>
 
-            <Col>
+            <Col >
               <br />
-              <Route exact path='/' component={() => this.Home()} />
-              <Route path='/userStory/list' component={() => this.userStoryList()} />
+              <Route exact path='/' component={() => this.userStoryList()} />
+              {/* <Route path='/userStory/list' component={() => this.userStoryList()} /> */}
               <Route path='/container/all-containers' component={() => this.allContainers()} />
               <Route path='/container/add-new-container' component={() => this.createContainer()} />
               <Route path='/container/select-container' component={() => this.selectContainer()} />

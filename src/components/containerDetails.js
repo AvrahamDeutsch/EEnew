@@ -8,7 +8,7 @@ import Container from '../components/Container';
 
 import {
     Row, Col, Card, Button, CardHeader, CardFooter, CardBody,
-    CardTitle, CardText
+    Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
 
@@ -21,8 +21,15 @@ class ContainerDetails extends Component {
         this.state = {
             viewTasksMode: false,
             addTaskMode: false,
-            containerEditMode: false
+            editContainerMode: true,
+            containerDeleteMode: false
+
         }
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({})
+
     }
 
     viewAllTasks() {
@@ -56,7 +63,7 @@ class ContainerDetails extends Component {
             arr.push(
                 <Row>
                     <Col>
-                    <br/>
+                        <br />
                         {this.state.viewTasksMode ? <Button onClick={() => this.setState({ viewTasksMode: !this.state.viewTasksMode })} >close</Button> : null}
                     </Col>
                 </Row>)
@@ -96,12 +103,35 @@ class ContainerDetails extends Component {
                 tasksArray={this.props.tasksArray}
                 taskContainerUserStory={this.props.taskContainerUserStory}
                 containerId={this.props.containerId}
-                addContainerMode={true}
                 changeEditContainerMode={(bool) => this.changeEditContainerMode(bool)}
                 editContainerMode={this.state.containerEditMode}
+                addContainerMode={false}
             />
 
         )
+    }
+
+    deleteDialog() {
+
+        return (<div>
+            <Modal isOpen={this.state.containerDeleteMode}>
+                <ModalHeader >Are you sure you want to delete the container?</ModalHeader>
+                <ModalBody>Deleting the container will delete all data/tasks its contains</ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={() => {
+                        this.deleteContainer(this.props.containerId, this.props.mileStoneNumber)
+                    }}>Delete</Button>{' '}
+                    <Button color="primary" onClick={() => this.setState({ containerDeleteMode: false })}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        </div>
+        )
+
+    }
+
+    deleteContainer(containerId, mileStoneNumber) {
+        store.dispatch({ type: 'DELETE_CONTAINER', payload: { containerId, mileStoneNumber } })
+        this.setState({ containerDeleteMode: false })
     }
 
     render() {
@@ -122,7 +152,7 @@ class ContainerDetails extends Component {
                             <Col>Category: {this.props.currentCategory}</Col>
                         </Row>
                         <Row>
-                            <Col>User story: {this.props.taskContainerUserStory ? this.props.projectUserStory[this.props.taskContainerUserStory].userStory : null}</Col>
+                            <Col>User story: {this.props.taskContainerUserStory != undefined ? this.props.projectUserStory[this.props.taskContainerUserStory].userStory : null }</Col>
                         </Row>
                         <Row>
                             <Col><h5>Total e.w. : {this.props.totalWorkNumber}</h5></Col>
@@ -132,6 +162,7 @@ class ContainerDetails extends Component {
                                 {this.props.tasksArray.length >= 1 ? <Button onClick={() => this.setState({ viewTasksMode: !this.state.viewTasksMode })} >all tasks</Button> : null}{' '}
                                 <Button onClick={() => this.setState({ addTaskMode: !this.state.addTaskMode })} >add task</Button>{' '}
                                 <Button onClick={() => this.setState({ containerEditMode: !this.state.containerEditMode })} >edit</Button>{' '}
+                                <Button color="danger" onClick={() => this.setState({ containerDeleteMode: !this.state.containerDeleteMode })} >delete</Button>{' '}
                             </Col>
 
                         </Row>
@@ -140,6 +171,7 @@ class ContainerDetails extends Component {
                                 {this.state.viewTasksMode ? this.viewAllTasks() : null}
                                 {this.state.addTaskMode ? this.addTask() : null}
                                 {this.state.containerEditMode ? this.editContainer() : null}
+                                {this.state.containerDeleteMode ? this.deleteDialog() : null}
                             </Col>
                         </Row>
 

@@ -64,7 +64,6 @@ class TaskDetails extends Component {
         console.log(taskIndex);
         store.dispatch({ type: 'DELETE_TASK', payload: { taskIndex, containerId, mileStoneNumber } })
         this.setState({ deleteMode: false })
-        this.setState({})
     }
 
     deleteDialog() {
@@ -94,30 +93,30 @@ class TaskDetails extends Component {
                         <Card body>
                             <CardTitle><h3>{this.state.taskName}</h3></CardTitle>
                             <Row>
-                                <Col><b>component :</b> {this.state.component}</Col>
+                                <Col>component : {this.state.component}</Col>
                             </Row>
                             <Row>
-                                <Col><b>user story:</b> {this.props.projectUserStory[this.state.taskUserStory.index].userStory}</Col>
+                                <Col>user story : {this.props.projectUserStory[this.state.taskUserStory.index].userStory}</Col>
                             </Row>
                             <Row>
-                                <Col><b>complexity days:</b> {this.state.complexity}</Col>
+                                <Col>complexity days : {this.state.complexity}</Col>
                             </Row>
                             <Row>
-                                <Col><b>Learning days:</b> {this.state.LearningDays}</Col>
+                                <Col>Learning days : {this.state.LearningDays}</Col>
                             </Row>
                             <Row>
-                                <Col><b>risk days:</b> {this.state.risk}</Col>
+                                <Col>risk days : {this.state.risk}</Col>
                             </Row>
                             <Row>
-                                <Col><b>details:</b> {this.state.details}</Col>
+                                <Col>details : {this.state.details}</Col>
                             </Row>
                             <Row>
-                                <Col><b>assumptions: </b>{this.state.assumptions}</Col>
+                                <Col>assumptions : {this.state.assumptions}</Col>
                             </Row>
 
                             <Row>
                                 <Col >
-                                    <Col><h5><b>total e.w. : {this.state.total}</b></h5></Col>
+                                    <Col><b>total e.w. : {this.state.total}</b></Col>
                                     <Button color='success' onClick={() => this.setState({ taskEditMode: !this.state.taskEditMode })}>Edit</Button>{' '}
                                     <Button color='danger' onClick={() => this.setState({ deleteMode: true })}>Delete</Button>{' '}
                                 </Col>
