@@ -14,8 +14,9 @@ class App extends Component {
 
       currentContainer: null,
       containerSelectMode: false,
-      addContainerMode: this.props.addContainerMode,
+      // addContainerMode: this.props.addContainerMode,
       value: null,
+      projectUserStory: []
     }
   }
 
@@ -102,11 +103,10 @@ class App extends Component {
 
     return (
       <Container
-      // containerName ='Enter the container name'
-      mileStoneNumber='Choose a num'
-      // addContainerMode={this.state.addContainerMode}
-      addContainerMode={true}
-      totalWorkNumber={0}
+        // containerName ='Enter the container name'
+        mileStoneNumber='Choose a num'
+        addContainerMode={true}
+        totalWorkNumber={0}
 
       />
     )
@@ -116,7 +116,7 @@ class App extends Component {
     var arr = []
     var props = this.props.containers;
     // var props = this.state.containers;
-        if (props.length > 0) {
+    if (props.length > 0) {
       props.map((container, index) => {
         // console.log(container);
         return arr.push(
@@ -143,33 +143,34 @@ class App extends Component {
   }
 
   userStoryList() {
-    
+
     let arr = [];
-    // store.dispatch({type:'FILL_USER_STORY_BY_SPECIFIC_PROJECT'})
-    this.props.projectUserStory.map((elm, index) => {
-      arr.push(
-        <ListGroupItem
-          color={elm.numOfTasks == 0 ? "warning" : "info"}
-          className="justify-content-between">{elm.userStory} <Badge pill>{elm.numOfTasks}</Badge>
-        </ListGroupItem>
-      )
-    })
+      this.props.projectUserStory.map((elm, index) => {
+        arr.push(
+          <ListGroupItem
+            color={elm.numOfTasks == 0 ? "warning" : "info"}
+            className="justify-content-between">{elm.userStory} <Badge pill>{elm.numOfTasks}</Badge>
+          </ListGroupItem>
+        )
+      })
+
+    // }
     return arr
   }
 
   Home() {
     return (
-        <FormGroup className='col-4 ml-auto'>
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            placeholder='Select project'
-            onChange={(e) => this.projectSelected(e)}
-          >
-            {this.fillProgectsSelect()}
-          </Input>
-        </FormGroup>
+      <FormGroup className='col-4 ml-auto'>
+        <Input
+          type="select"
+          name="select"
+          id="exampleSelect"
+          placeholder='Select project'
+          onChange={(e) => this.projectSelected(e)}
+        >
+          {this.fillProgectsSelect()}
+        </Input>
+      </FormGroup>
     )
   }
 
@@ -183,7 +184,7 @@ class App extends Component {
             <Col className="header">
               <header className={'container'}>
                 <div className="row">
-                
+
                   <div className='col-3 pt-2'>Effort Evaluator</div>
                   {this.Home()}
                 </div>
@@ -191,7 +192,7 @@ class App extends Component {
             </Col>
           </Row>
           <Row>
-            <Col style={{right:'-10px'}}>
+            <Col style={{ right: '-10px' }}>
               <br />
               <li> <Link className='link' to='/' >user story array</Link></li>
               {/* <li> <Link className='link' to='/userStory/list' >user story array</Link></li> */}
@@ -200,7 +201,7 @@ class App extends Component {
               <li> <Link className='link' to={'/container/select-container'} >select container</Link></li>
             </Col>
 
-            <Col>
+            <Col >
               <br />
               <Route exact path='/' component={() => this.userStoryList()} />
               {/* <Route path='/userStory/list' component={() => this.userStoryList()} /> */}

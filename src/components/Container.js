@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Input, Label, Form, Row, Col, FormGroup } from 'reactstrap';
-import Task from './task'
-import TaskDetails from './taskDetails'
 import store from '../store/store.js'
 
 class Container extends Component {
@@ -12,7 +10,6 @@ class Container extends Component {
         this.state = {
             containerId: this.props.containerId,
             currentCategory: this.props.currentCategory,
-            // arrayResult: this.props.arrayResult,
             containerName: this.props.containerName,
             mileStoneNumber: this.props.mileStoneNumber,
             totalWorkNumber: parseFloat(Number(this.props.totalWorkNumber).toFixed(2)),
@@ -47,39 +44,6 @@ class Container extends Component {
     }
 
 
-    // getTotalWeightedEffort() {
-    //     var total = 0
-    //     this.state.arrayResult.map((sum => total += sum.total))
-    //     this.setState({ totalWorkNumber: total })
-    //     return total
-    // }
-
-
-
-    // userStorySelectChange(e) {  // if user changes Task Container user story => each Task user story should be changed to Task Container user story
-    //     var taskContainerUserStory = e.target.value;
-    //     this.setState({ taskContainerUserStory: taskContainerUserStory });
-    //     var tasksUserStoryArray = this.state.tasksUserStoryArray.slice();
-    //     for (let i = 0; i < tasksUserStoryArray.length; i++) {
-    //         tasksUserStoryArray[i] = taskContainerUserStory;
-
-    //     }
-    //     this.setState({ tasksUserStoryArray: tasksUserStoryArray });
-    // }
-
-    // taskUserStorySelectChange(e) {
-    //     var us = e.target.value;
-    //     if (this.state.taskContainerUserStory !== us) {
-    //         this.setState({ taskContainerUserStory: '' })
-    //     }
-
-    // }
-
-
-    // isOpen() {
-    //     this.setState({ taskMode: !this.state.taskMode })
-    // }
-
     fillcategorySelect() {
         var arr = [<option >select your category</option>]
         this.props.categories.map((category, index) => {
@@ -103,11 +67,12 @@ class Container extends Component {
         // console.log(  us ,typeof index);
         // if (this.state.taskContainerUserStory != undefined) {
         this.props.projectUserStory.map((us, index) => {
-            console.log(us);
-            
-            return index === this.state.taskContainerUserStory
-                ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)
-                : arr.push(<option value={index} key={index}>{us.userStory}</option>)
+            // console.log(us);
+            if (us.userStory != null) {
+                return index === this.state.taskContainerUserStory
+                    ? arr.push(<option selected value={index} key={index}>{us.userStory}</option>)
+                    : arr.push(<option value={index} key={index}>{us.userStory}</option>)
+            }
         })
         return arr
     }
@@ -117,65 +82,15 @@ class Container extends Component {
         console.log(value);
         this.setState({ taskContainerUserStory: parseInt(value) })
     }
-    // addTask() {
-    //     console.log( this.state.value);
-
-
-    //     return (<Task
-    //         mileStoneNumber={this.state.mileStoneNumber}
-    //         containerId={this.state.containerId}
-    //         taskUserStory={this.state.taskContainerUserStory}
-    //         arrayResult={this.state.arrayResult}
-    //         total='0'
-    //         addTasksMode={() => this.addTasksMode()}
-    //     />)
-    // }
-
-    // allTasksMode() {
-    //     this.setState({ allTasksMode: !this.state.allTasksMode })
-    // }
-
-    // addTasksMode() {
-    //     this.setState({ tasksMode: !this.state.tasksMode })
-    // }
-
-    // wiewAllTasks() {
-    //     var arr = [];
-    //     this.state.tasksArray.map((task, index) => {
-    //         console.log(task);
-    //         return arr.push(
-    //             <TaskDetails
-    //                 key={index}
-    //                 taskIndex={index}
-    //                 taskName={task.taskName}
-    //                 component={task.component}
-    //                 complexity={task.complexity}
-    //                 risk={task.risk}
-    //                 LearningDays={task.LearningDays}
-    //                 total={task.days}
-    //                 taskUserStory={task.taskUserStory}
-    //                 details={task.details}
-    //                 assumptions={task.assumptions}
-    //                 mileStoneNumber={this.state.mileStoneNumber}
-    //                 containerId={this.state.containerId}
-    //             />
-    //         )
-    //     })
-    //     return arr
-    // }
 
     save() {
         if (!this.state.milestoneMode) {
             alert("enter milesone")
         }
-
         else if (this.state.containerName === 'Enter the container name') {
             alert('Enter the container name please')
         }
-
         else {
-            console.log(this.state);
-
             store.dispatch({
                 type: 'ADD_NEW_CONTAINER', payload: {
                     currentCategory: this.state.currentCategory,
@@ -187,7 +102,6 @@ class Container extends Component {
                     category: this.state.category,
                 }
             })
-            store.dispatch({ type: 'CHANGE_ADD_CONTAINER_MODE' })
         }
         this.setState({})
 
@@ -211,6 +125,7 @@ class Container extends Component {
             }
         })
     }
+   
     render() {
 
         return (

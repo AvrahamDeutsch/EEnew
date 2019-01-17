@@ -53,7 +53,6 @@ class Task extends Component {
             });
         this.afterSetStateFinished()
 
-
     }
 
     afterSetStateFinished() {

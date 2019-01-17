@@ -51,7 +51,9 @@ const reduser = function (state, action) {
 
         case 'FILL_USER_STORY_BY_SPECIFIC_PROJECT':
             newState.projectUserStory = action.payload
-            var urlUserStory = `${src}/effort/allData/${state.currentProject}`
+            
+            
+            var urlUserStory = `${src}/effort/processes/${state.currentProject}`
             getData(urlUserStory, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT')
             return newState
 
@@ -70,32 +72,9 @@ const reduser = function (state, action) {
                 } else {
                     return null
                 }
-
-                console.log(newState.mileStone, ' => ', newState.containers);
+                // console.log(newState.mileStone, ' => ', newState.containers);
             }))
             return newState
-
-        // case 'CATEGORY_CHANGED':
-        //     var urlChangeCategory = `${categoryPath}/find_category/?category=${action.payload}`
-        //     console.log(urlChangeCategory);
-        //     getData(urlChangeCategory, 'FILL_COMPONENTS')
-        //     return newState
-
-        // case 'FILL_COMPONENTS':
-        //     let arr1 = [];
-        //     // console.log(action.payload);
-        //     action.payload.arrayResult.map((component, index) => {
-        //         return arr1.push({
-        //             id: component._id,
-        //             category: component.category,
-        //             component: component.component,
-        //             complexity: [component.low_complexity, component.med_complexity, component.high_complexity]
-        //         })
-        //     })
-        //     console.log(arr1);
-        //     newState.arrayResult = arr1;
-        //     console.log(newState);
-        //     return newState
 
         case 'CHANGE_ADD_CONTAINER_MODE':
             newState.addContainerMode = !newState.addContainerMode;
@@ -121,8 +100,9 @@ const reduser = function (state, action) {
             return newState;
 
         case 'UPDATE_CURRENT_PROJECT':
-            var urlCurentProject = `${src}/effort/allData/${state.currentProject}`;
-            getData(urlCurentProject, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT');
+            var urlCurentProject = `${src}/userStory/allUserStories/${state.currentProject}`;
+            // getData(urlCurentProject, 'FILL_CONTAINERS_FOR_SPECIFIC_PROJECT');
+            getData(urlCurentProject, 'FILL_USER_STORY_BY_SPECIFIC_PROJECT');
             return newState;
 
         case 'ADD_TASK':
